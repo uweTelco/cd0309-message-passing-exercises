@@ -1,19 +1,6 @@
 from .enums import Status
 
-
-def create_order(order_data):
-    """
-    This is a stubbed method of retrieving a resource. It doesn't actually do anything.
-    """
-    # Do something to create the resource
-    return order_data
-
-
-def retrieve_orders():
-    """
-    This is a stubbed method of retrieving multiple resources. It doesn't actually do anything.
-    """
-    return [
+db = [
         {
             "id": "1",
             "status": Status.Queued.value,
@@ -33,3 +20,21 @@ def retrieve_orders():
             ]
         }
     ]
+
+def create_order(order_data):
+    """
+    This is a stubbed method of retrieving a resource. It doesn't actually do anything.
+    """
+    global db
+    if "id" not in order_data:
+        order_data["id"] = str(len(db) + 1)
+    db.append(order_data)
+    return order_data
+
+
+def retrieve_orders():
+    """
+    This is a stubbed method of retrieving multiple resources. It doesn't actually do anything.
+    """
+    return db
+
