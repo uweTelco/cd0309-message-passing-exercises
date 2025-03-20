@@ -3,7 +3,7 @@ import json
 from kafka import KafkaProducer
 from flask import Flask, jsonify, request, g, Response
 
-from .services import retrieve_orders, create_order
+from services import retrieve_orders, create_order
 
 app = Flask(__name__)
 

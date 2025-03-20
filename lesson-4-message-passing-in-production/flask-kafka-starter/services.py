@@ -1,6 +1,9 @@
 import json
-from .app import g
-from .enums import Status
+from enums import Status
+from kafka import KafkaProducer
+
+
+
 
 
 def create_order(order_data):
@@ -13,8 +16,12 @@ def create_order(order_data):
     # kafka_producer = g.kafka_producer
     # TODO: send the data using kafka_producer using .send()
     kafka_data = json.dumps(order_data).encode()
-    kafka_producer = g.kafka_producer
+    TOPIC_NAME = 'items'
+    KAFKA_SERVER = 'localhost:9092'
+
+    kafka_producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
     kafka_producer.send("items", kafka_data)
+    kafka_producer.flush()
 
 
 def retrieve_orders():
