@@ -1,0 +1,93 @@
+openapi: 3.0.1
+info:
+  title: Computer Order API
+  description: "Internal API that enables to order computer equiqment for employees."
+  version: 1.0.0
+servers:
+  - url: '{apiRoot}/api/orders'
+    variables:
+      apiRoot:
+        default: 'https://serverRoot'
+        enum:
+          - 'https://localhost'
+paths:
+  /computers:
+    post:
+      operationId: createComputerOrder
+      description: Create internal orders for computer
+      tags:
+        - computer order
+      requestBody:
+        required: true
+        description: The resource specification item to be patched
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+    get:
+      operationId: getOrders
+      description: Retrieve all orders
+      tags:
+        - computer order
+      responses:
+         "200":
+          description: List of ResourceCatalogs fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"      
+components:
+  schemas:
+    Order:
+      type: object
+      description: Order Object to purchase internally computer
+      properties: 
+        id:
+          type: string
+          description: unique identifier
+        status:
+          type: string
+          description: |-
+            Status of the entity returned
+             * `Queued` - Status is Queued
+             * `Processing` - Status is Processing
+             * `Completed` - Status is Completed
+             * `Failed` - Status is Failed
+          enum:
+            - Queued
+            - Processing
+            - Completed
+            - Failed
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when it is created.
+        created_by:
+          type: string
+          description: User who created the order.
+        equipment:
+          type: array
+          description: A list of equipment
+          items:
+            $ref: "#/components/schemas/Equipment"
+    Equipment:
+      type: object
+      description: Equipments to be ordered additionally.
+      properties:
+        name:
+          type: string
+          description: Equipment Enum
+          enum:
+            - KEYBOARD
+            - MOUSE
+            - WEBCAM
+  securitySchemes: {}
